@@ -1,1 +1,1 @@
-export const TABLE_NAME = 'myTodosTable';
+export const TABLE_NAME = 'myTodoTable';

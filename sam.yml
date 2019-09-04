@@ -1,0 +1,91 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Timeout: 10
+    MemorySize: 256
+    Runtime: nodejs8.10
+    CodeUri: './dist'
+    
+Resources:
+  CreateTodo:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: './dist'
+      Handler: index.createTodo
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /todo
+            Method: POST
+  
+  ReadTodo:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: './dist'
+      Handler: index.readTodo
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /todo/{id}
+            Method: GET
+
+  DeleteTodo:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: './dist'
+      Handler: index.deleteTodo
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /todo/{id}
+            Method: DELETE
+
+  UpdateTodo:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: './dist'
+      Handler: index.updateTodo
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /todo/{id}
+            Method: PUT
+  
+  myTodoTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: myTodoTable
+      AttributeDefinitions:
+      - AttributeName: todo_id
+        AttributeType: S
+      KeySchema:
+      - AttributeName: todo_id
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  Api:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/todo/"
+  GetTodo:
+    Description: "Lambda Function ARN"
+    Value: !GetAtt CreateTodo.Arn
