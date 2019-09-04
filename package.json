@@ -1,0 +1,53 @@
+{
+  "name": "hello_world",
+  "version": "1.0.0",
+  "description": "hello world sample for NodeJS",
+  "main": "./dist/index.js",
+  "repository": "https://github.com/awslabs/aws-sam-cli/tree/develop/samcli/local/init/templates/cookiecutter-aws-sam-hello-nodejs",
+  "author": "SAM CLI",
+  "license": "MIT",
+  "dependencies": {
+    "ajv": "^6.10.2",
+    "uuid": "^3.3.3"
+  },
+  "scripts": {
+    "bpd": "npm run build && npm run package && npm run deploy",
+    "test": "jest test/.*.test.ts",
+    "test-cov": "jest test/.*.test.ts --coverage",
+    "test-int": "jest test/item-handler.int.ts",
+    "build": "webpack",
+    "package": "sam package --template-file ./sam.yml --output-template sam.packaged.yml --s3-bucket rahzel-package",
+    "deploy": "sam deploy --template-file sam.packaged.yml --region us-east-2 --capabilities CAPABILITY_IAM --stack-name sam-dynamo-apigw"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.31",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.2",
+    "@types/uuid": "^3.4.5",
+    "aws-sdk": "^2.514.0",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.0.2",
+    "ts-loader": "^6.0.4",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.7"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "./test/.*.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ]
+  }
+}
