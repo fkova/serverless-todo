@@ -17,6 +17,6 @@ const validatorService = new SchemaValidatorService(
     }));
 
 export const createTodo = commonHeaders()(createTodoLambda(todoService, validatorService));
-export const readTodo = readTodoLambda(todoService);
-export const deleteTodo = deleteTodoLambda(todoService);
-export const updateTodo = updateTodoLambda(todoService, validatorService);
+export const readTodo = commonHeaders()(readTodoLambda(todoService));
+export const deleteTodo = commonHeaders()(deleteTodoLambda(todoService));
+export const updateTodo = commonHeaders()(updateTodoLambda(todoService, validatorService));

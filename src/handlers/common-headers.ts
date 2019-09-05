@@ -6,7 +6,9 @@ export default (): ((handler: Handler<APIGatewayEvent, APIGatewayProxyResult>) =
             const response = await handler(event, context, callback) as APIGatewayProxyResult;
 
             response.headers = {
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': '*',
+                'Access-Control-Allow-Methods': 'GET,PUT,PATCH,POST,DELETE,OPTIONS'  
             };
 
             return response;
