@@ -12,8 +12,8 @@
   },
   "scripts": {
     "bpd": "npm run build && npm run package && npm run deploy",
-    "test": "jest test/.*.test.ts",
-    "test-cov": "jest test/.*.test.ts --coverage",
+    "test": "jest",
+    "test-cov": "jest test/unit/* --coverage",
     "test-int": "jest test/item-handler.int.ts",
     "build": "webpack",
     "package": "sam package --template-file ./sam.yml --output-template packaged.yml --s3-bucket rahzel-package",
@@ -37,7 +37,7 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
-    "testRegex": "./test/.*.ts$",
+    "testRegex": "./test/unit/.*.ts$",
     "moduleFileExtensions": [
       "ts",
       "tsx",
