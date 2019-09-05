@@ -6,6 +6,7 @@ import { default as updateTodoLambda } from './handlers/todo-handler-update';
 import { default as deleteTodoLambda } from './handlers/todo-handler-delete';
 import { TodoService } from './services/todo-service';
 import { SchemaValidatorService } from './services/schema-validator-service';
+import commonHeaders from './handlers/common-headers'
 
 const dynamoDbClient = new DynamoDB.DocumentClient({ region: 'us-east-2' });
 const todoService = new TodoService(dynamoDbClient); 
@@ -15,7 +16,7 @@ const validatorService = new SchemaValidatorService(
         format: 'full'
     }));
 
-export const createTodo = createTodoLambda(todoService, validatorService);
+export const createTodo = commonHeaders()(createTodoLambda(todoService, validatorService));
 export const readTodo = readTodoLambda(todoService);
 export const deleteTodo = deleteTodoLambda(todoService);
 export const updateTodo = updateTodoLambda(todoService, validatorService);
