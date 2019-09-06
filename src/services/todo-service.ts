@@ -9,7 +9,7 @@ export interface ITodoService {
     updateTodo(id: string, title: string): Promise<any>;
     deleteTodo(id: string): Promise<any>;
 }
-export class TodoService {
+export class TodoService implements ITodoService{
     constructor(private dynamoDbClient: DocumentClient) { };
 
     async createTodo(title: string): Promise<any> {

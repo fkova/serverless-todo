@@ -6,7 +6,7 @@ import TodoSchema from '../schemas/genericTodoSchema.schema.json';
 
 export default (todoService: ITodoService, validator: ISchemaValidatorService): Handler<APIGatewayEvent, APIGatewayProxyResult> => {
     return async (event: APIGatewayEvent) => {
-        let body = JSON.parse(event.body  || '');
+        let body = JSON.parse(event.body  || '{}');
 
         let validationError = validator.validate(body, TodoSchema);
 

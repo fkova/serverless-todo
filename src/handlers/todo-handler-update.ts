@@ -9,7 +9,7 @@ export default (todoService: ITodoService, validator: ISchemaValidatorService): 
         if (!event.pathParameters) {
             return ResponseFactory.generateBadRequestResponse('Missing id!');
         }
-        let body = JSON.parse(event.body || '');
+        let body = JSON.parse(event.body || '{}');
 
         let validationError = validator.validate(body, TodoSchema);
 

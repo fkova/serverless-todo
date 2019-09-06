@@ -13,7 +13,7 @@
   "scripts": {
     "bpd": "npm run build && npm run package && npm run deploy",
     "test": "jest",
-    "test-cov": "jest test/unit/* --coverage",
+    "test-cov": "jest --coverage",
     "test-int": "jest test/item-handler.int.ts",
     "build": "webpack",
     "package": "sam package --template-file ./sam.yml --output-template packaged.yml --s3-bucket rahzel-package",

@@ -14,5 +14,8 @@
     "esModuleInterop": true,
     "inlineSourceMap": true,
     "resolveJsonModule": true
-  }
+  },
+  "include": [
+    "src"
+  ]
 }
