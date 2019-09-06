@@ -6,7 +6,11 @@ Globals:
     Timeout: 10
     MemorySize: 256
     Runtime: nodejs8.10
-    CodeUri: './dist'
+  Api:
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
     
 Resources:
   CreateTodo:
@@ -35,6 +39,11 @@ Resources:
           Type: Api
           Properties:
             Path: /todo/{id}
+            Method: GET
+        Api2:
+          Type: Api
+          Properties:
+            Path: /todo
             Method: GET
 
   DeleteTodo:

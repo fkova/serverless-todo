@@ -5,8 +5,9 @@ import { ResponseFactory } from '../factories/response-factory';
 export default (todoService: ITodoService): Handler<APIGatewayEvent, APIGatewayProxyResult> => {
     return async (event: APIGatewayEvent) => {
 
-        if (!event.pathParameters) {
-            return ResponseFactory.generateBadRequestResponse('Missing id!');
+        if (!event.pathParameters) {  
+            let res = await todoService.readAllTodo();
+            return ResponseFactory.generateSuccessResponse(res);
         }
 
         try {

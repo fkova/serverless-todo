@@ -10,7 +10,7 @@ export default (): ((handler: Handler<APIGatewayEvent, APIGatewayProxyResult>) =
                 'Access-Control-Allow-Headers': '*',
                 'Access-Control-Allow-Methods': 'GET,PUT,PATCH,POST,DELETE,OPTIONS'  
             };
-
+            
             return response;
         };
     };

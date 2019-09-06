@@ -5,6 +5,7 @@ import {TABLE_NAME} from '../constants';
 export interface ITodoService {
     createTodo(title: string): Promise<any>;
     readTodo(id: string): Promise<any>;
+    readAllTodo(): Promise<any>;
     updateTodo(id: string, title: string): Promise<any>;
     deleteTodo(id: string): Promise<any>;
 }
@@ -34,6 +35,12 @@ export class TodoService {
         };
 
         return (await this.dynamoDbClient.get(params).promise()).Item
+    }
+
+    async readAllTodo(): Promise<any> {
+        return await this.dynamoDbClient.scan( {
+            TableName: TABLE_NAME
+        }).promise()
     }
 
     async updateTodo(id: string, title: string): Promise<any> {
