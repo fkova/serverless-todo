@@ -5,6 +5,7 @@
     "outDir": "./dist",
     "strict": true,
     "baseUrl": "./",
+    "strictNullChecks": false,
     "typeRoots": [
       "node_modules/@types"
     ],  

@@ -16,3 +16,7 @@ aws --region us-east-2 cloudformation delete-stack --stack-name sam-dynamo-apigw
 
 ## frontend:
 https://github.com/rahzell/react-todo
+
+
+## blueprint
+![cloudcraft](cloudcraft.png)
