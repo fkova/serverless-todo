@@ -21,4 +21,4 @@ https://github.com/rahzell/react-todo
 
 
 ## blueprint
-![cloudcraft](cloudcraft.png)
+![cloudcraft](draft.png)
