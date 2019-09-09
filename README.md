@@ -1,6 +1,8 @@
-# Serverless Todo App
-
-Serverless REST ApiGateway with DynamoDB, Lambdas, SQS and Cognito
+# Microservice for CRUD DB operations using aws serverless infrastructure
+- API Gateway
+- Lambdas
+- SNS
+- DynamoDB + stream
 
 ## Installation
 
