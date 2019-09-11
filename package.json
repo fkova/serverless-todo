@@ -17,7 +17,7 @@
     "test-int": "jest test/item-handler.int.ts",
     "build": "webpack",
     "package": "sam package --template-file ./sam.yml --output-template packaged.yml --s3-bucket rahzel-package",
-    "deploy": "sam deploy --template-file packaged.yml --region us-east-2 --capabilities CAPABILITY_IAM --stack-name serverless-todo-backend"
+    "deploy": "sam deploy --template-file packaged.yml --region us-east-2 --capabilities CAPABILITY_NAMED_IAM --stack-name serverless-todo-backend"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.31",

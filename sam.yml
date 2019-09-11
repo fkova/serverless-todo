@@ -6,6 +6,9 @@ Globals:
     Timeout: 10
     MemorySize: 256
     Runtime: nodejs8.10
+    Environment:
+      Variables:
+        SNS_TOPIC_ARN: !Ref SnsTopic
   Api:
     Cors:
       AllowMethods: "'*'"
@@ -79,20 +82,7 @@ Resources:
     Properties:
       CodeUri: './dist'
       Handler: index.streamHandler
-      Policies: 
-        - AWSLambdaDynamoDBExecutionRole
-        - SNSPublishMessagePolicy:
-            TopicName: !GetAtt SnsTopic.TopicName
-      Events:
-        Stream:
-          Type: DynamoDB
-          Properties:
-            Stream: !GetAtt myTodoTable.StreamArn
-            BatchSize: 100
-            StartingPosition: TRIM_HORIZON
-      Environment:
-        Variables:
-          SNS_TOPIC_ARN: !Ref SnsTopic
+      Role: !GetAtt DynamoEventStreamRole.Arn
   
   SnsTopic:
     Type: AWS::SNS::Topic
@@ -116,6 +106,60 @@ Resources:
         WriteCapacityUnits: 5
       StreamSpecification:
         StreamViewType: NEW_AND_OLD_IMAGES
+  
+  DynamoEventStreamRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          Effect: Allow
+          Principal:
+            Service:
+              - 'lambda.amazonaws.com'
+          Action: 
+            - 'sts:AssumeRole'
+      RoleName: 'DynamoEventStreamRole'
+  
+  SnsAndEventStreamPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: 'SnsAndEventStreamPolicy'
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - 'dynamodb:DescribeStream'
+              - 'dynamodb:GetRecords'
+              - 'dynamodb:GetShardIterator'
+              - 'dynamodb:ListStreams'
+              - 'dynamodb:Query'
+            Resource: '*'
+          - Effect: Allow
+            Action:
+              - 'logs:CreateLogGroup'
+              - 'logs:CreateLogStream'
+              - 'logs:PutLogEvents'
+            Resource: '*'
+          - Effect: Allow
+            Action:
+              - 'sns:Publish'
+            Resource: '*' 
+      Roles:
+        - Ref: DynamoEventStreamRole
+  
+  DataTableStream:
+    Type: AWS::Lambda::EventSourceMapping
+    DependsOn: SnsAndEventStreamPolicy
+    Properties:
+      BatchSize: 1
+      Enabled: True
+      EventSourceArn:
+        !GetAtt myTodoTable.StreamArn
+      FunctionName:
+        !GetAtt StreamHandler.Arn
+      StartingPosition: LATEST
       
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
