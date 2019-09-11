@@ -1,11 +1,8 @@
 import { default as handler } from '../../../src/handlers/stream-handler';
-import AWS from 'aws-sdk';
-import { DynamoDBStreamEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { MySNSService, ISNSService } from '../../../src/services/sns-service';
+import { DynamoDBStreamEvent } from 'aws-lambda';
+import { ISNSService } from '../../../src/services/sns-service';
 
-let mockedSNSService: ISNSService;
-let mockPublishToMyTopic = jest.spyOn(MySNSService.prototype, "publishToMyTopic");
-let testEventBody = {
+const testEventBody: DynamoDBStreamEvent = {
     "Records": [
         {
             "eventName": "INSERT",
@@ -31,42 +28,37 @@ let testEventBody = {
 }
 
 describe.only('Testing dynamodb event processor lambda', () => {
-    afterEach(() => {
-        jest.restoreAllMocks();
+    //methods
+    let mockPublishToMyTopic: jest.Mock;
+
+    //services
+    let mockSnsService: ISNSService;
+
+    beforeEach(() => {
+        mockPublishToMyTopic = jest.fn();
+
+        mockSnsService = new (jest.fn<ISNSService, []>(() => ({
+            publishToMyTopic: mockPublishToMyTopic,
+        })));
     });
 
     it('should be return statusCode 200 if SNS message sending succesful', async () =>{
-        mockPublishToMyTopic.mockImplementation(() => Promise.resolve());
+        mockPublishToMyTopic.mockResolvedValue('ok');
+        const response = await handler(mockSnsService)(testEventBody);
 
-        mockedSNSService = new MySNSService(new AWS.SNS());
-
-        const result = await callLambda(testEventBody);
-
-        expect(result.statusCode).toBe(200);
-        expect(result.body).toBe("Message sent");
-        expect(mockedSNSService.publishToMyTopic).toHaveBeenCalledTimes(1);
-        expect(mockedSNSService.publishToMyTopic).toHaveBeenCalledWith(testEventBody);
+        expect(mockPublishToMyTopic).toHaveBeenCalledTimes(1);
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toBe("Message sent");
+        expect(mockPublishToMyTopic).toBeCalledWith(testEventBody);
     });
 
     it('should be return statusCode 500 if SNS message sending unsuccesful', async () => {
+        mockPublishToMyTopic.mockRejectedValue('any error');
+        const response = await handler(mockSnsService)(testEventBody);
         
-        jest.spyOn(MySNSService.prototype, "publishToMyTopic").mockImplementation(() => 
-        {
-            console.log('whut');
-            return Promise.reject();
-        }
-        );
-        mockedSNSService = new MySNSService(new AWS.SNS());
-        const result = await callLambda(testEventBody);
-        
-        expect(result.statusCode).toBe(500);
-        expect(result.body).toBeUndefined();
-        expect(mockedSNSService.publishToMyTopic).toHaveBeenCalledTimes(1);
-        expect(mockedSNSService.publishToMyTopic).toHaveBeenCalledWith(testEventBody);
+        expect(response.statusCode).toBe(500);
+        expect(JSON.parse(response.body)).toBe("any error");
+        expect(mockPublishToMyTopic).toHaveBeenCalledTimes(1);
+        expect(mockPublishToMyTopic).toHaveBeenCalledWith(testEventBody);
     });
-
 });
-
-const callLambda = async (event: any) => {
-    return await handler(mockedSNSService)(event) as APIGatewayProxyResult;
-}

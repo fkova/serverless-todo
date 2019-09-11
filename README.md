@@ -22,3 +22,10 @@ https://github.com/rahzell/react-todo
 
 ## blueprint
 ![cloudcraft](draft.png)
+
+##TODO:
+- sns-service and stream-handler test based on vendorProfile service tests
+- stream reject-ről küldjön újjabb sns-t
+- use unmarshal at dynamodb stream events like in vendor-update-patch-handler.ts
+- separate subscripson resource
+- give IAM Policy and Role as resource seperated based on VendorPolicy
