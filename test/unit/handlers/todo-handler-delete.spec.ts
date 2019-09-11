@@ -5,7 +5,7 @@ import { DynamoDB } from 'aws-sdk';
 //import {} from 'jest-date-mock' - minek?
 let mockTodoService: ITodoService;
 
-describe.only('Testing create item handler', () => {
+describe.only('Testing delete item handler', () => {
     
     //let mockDeleteTodo: jest.Mock;
 

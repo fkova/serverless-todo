@@ -4,7 +4,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult, Context, Callback } from '
 import { DynamoDB } from 'aws-sdk';
 let mockedTodoService: ITodoService;
 
-describe.only('Testing create item handler', () => {
+describe.only('Testing read item handler', () => {
     beforeAll(() => {
         jest.spyOn(TodoService.prototype, 'readTodo').mockImplementation((id) => Promise.resolve({
             todo_id: id,

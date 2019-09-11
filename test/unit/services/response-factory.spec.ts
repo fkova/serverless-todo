@@ -1,5 +1,5 @@
 import { STATUS_CODES } from 'http';
-import { ResponseFactory } from '../../src/factories/response-factory';
+import { ResponseFactory } from '../../../src/factories/response-factory';
 
 describe('Testing response factory', () => {
     it('should return with success response without additional data', () => {

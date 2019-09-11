@@ -74,11 +74,11 @@ Resources:
             Path: /todo/{id}
             Method: PUT
 
-  ProcessDynamoStream:
+  StreamHandler:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: './dist'
-      Handler: index.processDynamoStream
+      Handler: index.streamHandler
       Policies: 
         - AWSLambdaDynamoDBExecutionRole
         - SNSPublishMessagePolicy:

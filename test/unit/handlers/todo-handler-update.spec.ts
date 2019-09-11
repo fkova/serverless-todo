@@ -13,7 +13,7 @@ const jsonSchemaValidatorService = new SchemaValidatorService(
 
 let mockedTodoService: ITodoService;
 
-describe.only('Testing create item handler', () => {
+describe.only('Testing update item handler', () => {
     beforeAll(() => {
         jest.spyOn(TodoService.prototype, 'updateTodo').mockImplementation((id) => Promise.resolve({}));  
         mockedTodoService = new TodoService(new DynamoDB.DocumentClient());

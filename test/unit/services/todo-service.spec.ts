@@ -1,6 +1,6 @@
-import { TodoService } from '../../src/services/todo-service';
+import { TodoService } from '../../../src/services/todo-service';
 import { DynamoDB } from 'aws-sdk';
-import { TABLE_NAME } from '../../src/constants';
+import { TABLE_NAME } from '../../../src/constants';
 
 const dc = new DynamoDB.DocumentClient();
 const mockDbPutMethod: jest.SpyInstance = jest.spyOn(dc, 'put');

@@ -1,4 +1,4 @@
-import { SchemaValidatorService } from '../../src/services/schema-validator-service';
+import { SchemaValidatorService } from '../../../src/services/schema-validator-service';
 import ajv, { Ajv, ErrorObject } from 'ajv';
 
 describe('Schema validator service', () => {
